@@ -8,15 +8,17 @@ abstract class PersonaAcademica {
         this.legajo = legajo;
     }
     
-    void getNombre(){
-        if (nombre.isEmpty() || nombre ==null ) {
-            System.out.println("El nombre no puede estar vacío");
+    public String getNombre(){
+        if (nombre ==null  || nombre.isEmpty()   ) {
+           return "El nombre no puede estar vacío";
         }
+        return nombre;
     }
-    void getLegajo (){
+    public String getLegajo (){
         if (legajo == null) {
-            System.out.println("El legajo no puede ser nulo");
+            return "El legajo no puede ser nulo";
         }
+        return legajo;
     }
     
     abstract void mostrarResumen(); 
