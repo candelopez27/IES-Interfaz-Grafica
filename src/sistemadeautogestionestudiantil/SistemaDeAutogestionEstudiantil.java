@@ -44,7 +44,7 @@ public class SistemaDeAutogestionEstudiantil {
             switch (opcion) {
                 case 1 -> verPerfil();
                 case 2 -> menuMaterias();
-                case 3 -> menuAsistencia();
+                case 3 -> registrarAsistencia();
                 case 4 -> menuCalificaciones();
                 case 5 -> menuReportes();
                 case 0 -> System.out.println("¡Hasta luego!");
@@ -65,15 +65,15 @@ public class SistemaDeAutogestionEstudiantil {
     public static void menuMaterias(){
      int opcion;
         do {
-            System.out.println("\n┌─────────────────────────────────┐");
-            System.out.println("│       GESTIÓN DE MATERIAS       │");
-            System.out.println("├─────────────────────────────────┤");
-            System.out.println("│  1. Inscribirse a una materia   │");
-            System.out.println("│  2. Darse de baja               │");
-            System.out.println("│  3. Listar materias             │");
-            System.out.println("│  4. Buscar materia              │");
-            System.out.println("│  0. Volver                      │");
-            System.out.println("└─────────────────────────────────┘");
+            System.out.println("\n┌───────────────────────────────────┐");
+            System.out.println("  │       GESTIÓN DE MATERIAS     │");
+            System.out.println("  ├────────────────────────────────────┤");
+            System.out.println("  │  1. Inscribirse a una materia  │");
+            System.out.println("  │  2. Darse de baja              │");
+            System.out.println("  │  3. Listar materias            │");
+            System.out.println("  │  4. Buscar materia             │");
+            System.out.println("  │  0. Volver                     │");
+            System.out.println("  └─────────────────────────────────────┘");
             System.out.print("Opción: ");
             opcion = sc.nextInt();
 
@@ -89,121 +89,119 @@ public class SistemaDeAutogestionEstudiantil {
     }
 
     public static void inscribirseMateria() {
-        System.out.println("\n── Inscripción a materia ──");
+        sc.nextLine();
+
         System.out.print("Nombre de la materia: ");
         String nombre = sc.nextLine().trim();
 
-        String codigo;
-        while (true) {
-            System.out.print("Código (3-10 caracteres): ");
-            codigo = sc.nextLine().trim().toUpperCase();
-            if (codigo.length() >= 3 && codigo.length() <= 10) break;
-            System.out.println("   ⚠  El código debe tener entre 3 y 10 caracteres.");
-        }
+        System.out.print("Código: ");
+        String codigo = sc.nextLine().trim().toUpperCase();
 
-        int cuatrimestre;
-        while (true) {
-            System.out.print("Cuatrimestre (1 o 2): ");
-            cuatrimestre = sc.nextInt();
-            if (cuatrimestre == 1 || cuatrimestre == 2) break;
-            System.out.println("   ⚠  Debe ser 1 o 2.");
-        }
+        System.out.print("Cuatrimestre (1 o 2): ");
+        int cuatrimestre = sc.nextInt();
 
         System.out.print("Año: ");
         int anio = sc.nextInt();
 
         Materia m = new Materia(nombre, codigo, cuatrimestre, anio);
-        if (m.getCodigo() == null) {
-            System.out.println("   ⚠  No se pudo crear la materia (código inválido o duplicado).");
-            return;
+        alumno.inscribirse(m);                                       
+    }
+    
+    public static void registrarAsistencia(){
+        System.out.println("Ingrese el codigo de la materia: ");
+        String codigoMateria = sc.nextLine();
+        
+        InscripcionMateria inscripcion = alumno.getInscripcion(codigoMateria);
+        while (inscripcion == null) {
+            System.out.println("Error: no encontramos ese codigo: "+codigoMateria);
+            System.out.println("Ingrese nuevamente el codigo de la materia");
+            codigoMateria = sc.nextLine();
+            inscripcion = alumno.getInscripcion(codigoMateria);
         }
-          alumno.inscribirse(m);
-
+        System.out.println("Estuvo presente?");
+        String respuesta =sc.nextLine();
+        if (respuesta.equalsIgnoreCase("Si")) {
+            inscripcion.registrarAsistencia(true);
+        } else {
+            inscripcion.registrarAsistencia(false);
         }
-      
-       public static void bajaMateriaMenu(){  
+        //imprimir porcentaje actualizado:
+        double porcentajeActual = inscripcion.getPorcentajeAsistencia(); 
+        System.out.println("Tu porcentaje de asistencias actualizado: "+porcentajeActual);
+        String condicion = inscripcion.getCondicion();
+        //Advertencias
+        if (porcentajeActual>=75 && porcentajeActual<=80) {
+        System.out.println("Su condicion es: "+condicion +"\nSe encuentra en una zona de riesgo por inasistencias, no falte más :)");
+        } else if(porcentajeActual<75){
+        System.out.println("Se encuentra en perdida de regularidad por ende su condición es "+ condicion);
+        }
+    }
+    
+    public static void bajaMateriaMenu(){  
        if (alumno.getMaterias().isEmpty()){System.out.println("   No tenes materias incriptas."); return;}
            System.out.println("\nCodigo de materia a dar de baja: ");
            String codigo = sc.nextLine().trim();
            alumno.darDeBaja(codigo);
-       }
-       
-       public static void listarMaterias(){
-       ArrayList<InscripcionMateria> lista = alumno.getMaterias();
-       if (lista.isEmpty()){ System.out.println(" No tenes materias inscriptas."); return;}
-           System.out.println("\n---Materias inscriptas---");
-           for(InscripcionMateria i : lista){
-               System.out.printf(" %-6s %-20s | Cond: %-25s | Asist: %5.lf%% | Prom: %.2f%n", 
-                       i.getMateria().getCodigo(),
-                       i.getMateria().getCodigo(),
-                       i.getCondicion(),
-                       i.getPorcentajeAsistencia(),
-                       i.getPromedio());
-           }
-       
-       }
-       public static void buscarMateriaMenu(){
-           System.out.println("\n--Buscar materia--");
-           System.out.println("  1. Por codigo exacto");
-           System.out.println("  2. Por nombre");
-           System.out.println("  3. Por cuatrimestre");
-           System.out.println("Opcion:");
-           int opt = sc.nextInt();
-           
-           
-           switch (opt){
-             
-               case 1 -> {
-                   System.out.println("Codigo: ");
-                   String cod = sc.nextLine().trim();
-                   InscripcionMateria insc = alumno.getInscripcion(cod);
-                   if (insc != null) imprimirInscripcion(insc);
-                   else System.out.println("  No se encontro.");
-               
-               }
-               case 2 -> {
-                   System.out.println("Nombre(o fragmento):");
-                   String frag = sc.nextLine().trim();
-                   ArrayList<InscripcionMateria> res = alumno.buscarPorNombre(frag);
-                   if (res.isEmpty()) System.out.println("   No se encontraron resultados.");
-                   else res.forEach(SistemaDeAutogestionEstudiantil::imprimirInscripcion);
-               }
-               case 3 -> {
-                   System.out.println("Cuatrimestre (1 o 2): ");
-                   int cuat = sc.nextInt();
-                   ArrayList<InscripcionMateria> res = alumno.getInscripcion(cuat);
-                   if (res.isEmpty()) System.out.println("No se encontraron materias en ese cuatrimestre:");
-                   else res.forEach(SistemaDeAutogestionEstudiantil::imprimirInscripcion);
-               }
-               default -> System.out.println(" Opcion invalida.");
-           
-           }
-        
-       
-       }
-       public static void imprimirInscripcion(InscripcionMateria i){
-           System.out.printf("  [%s] %s — %s — Asist: %.1f%% — Prom: %.2f%n",
+    }
+ 
+    public static void listarMaterias(){
+    ArrayList<InscripcionMateria> lista = alumno.getMaterias();
+    if (lista.isEmpty()){ System.out.println(" No tenes materias inscriptas."); return;}
+        System.out.println("\n---Materias inscriptas---");
+        for(InscripcionMateria i : lista){
+            System.out.printf(" %-6s %-20s | Cond: %-25s | Asist: %5.lf%% | Prom: %.2f%n", 
                 i.getMateria().getCodigo(),
-                i.getMateria().getNombre(),
+                i.getMateria().getCodigo(),
                 i.getCondicion(),
                 i.getPorcentajeAsistencia(),
                 i.getPromedio());
+           }
+       
        }
     
+    public static void buscarMateriaMenu(){
+        System.out.println("\n--Buscar materia--");
+        System.out.println("  1. Por codigo exacto");
+        System.out.println("  2. Por nombre");
+        System.out.println("  3. Por cuatrimestre");
+        System.out.println("Opcion:");
+        
+        int opt = sc.nextInt();
+        
+        switch (opt){
+            case 1 -> {
+                System.out.println("Codigo: ");
+                String cod = sc.nextLine().trim();
+                InscripcionMateria insc = alumno.getInscripcion(cod);
+                if (insc != null) imprimirInscripcion(insc);
+                else System.out.println("  No se encontro.");
+                }
+            case 2 -> {
+                System.out.println("Nombre(o fragmento):");
+                String frag = sc.nextLine().trim();
+                ArrayList<InscripcionMateria> res = alumno.buscarPorNombre(frag);
+                if (res.isEmpty()) System.out.println("   No se encontraron resultados.");
+                else res.forEach(SistemaDeAutogestionEstudiantil::imprimirInscripcion);
+               }
+            case 3 -> {
+                System.out.println("Cuatrimestre (1 o 2): ");
+                int cuat = sc.nextInt();
+                ArrayList<InscripcionMateria> res = alumno.getInscripcion(cuat);
+                if (res.isEmpty()) System.out.println("No se encontraron materias en ese cuatrimestre:");
+                else res.forEach(SistemaDeAutogestionEstudiantil::imprimirInscripcion);
+               }
+            default -> System.out.println(" Opcion invalida.");
+           }
+        
+       
+       }
     
+    public static void imprimirInscripcion(InscripcionMateria i){
+        System.out.printf("  [%s] %s — %s — Asist: %.1f%% — Prom: %.2f%n",
+            i.getMateria().getCodigo(),
+            i.getMateria().getNombre(),
+            i.getCondicion(),
+            i.getPorcentajeAsistencia(),
+            i.getPromedio());
+       }
     }
-
-
-        
-        
-        
- 
-      
-
-
-
-
-        
-
-    
-
