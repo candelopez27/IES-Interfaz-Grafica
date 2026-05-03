@@ -7,7 +7,7 @@ public class Estudiante extends PersonaAcademica implements Consultable {
    private int anioIngreso;
    private ArrayList<InscripcionMateria> materias;
    
-   Estudiante(String carrera,String legajo, String nombre, int anioIngreso){
+   public Estudiante(String carrera,String legajo, String nombre, int anioIngreso){
        super(nombre, legajo);
        this.carrera = carrera;
        this.anioIngreso = anioIngreso;
@@ -34,7 +34,7 @@ public class Estudiante extends PersonaAcademica implements Consultable {
         }
     }
   
-  //Buscar Inscripcion - Busca la inscripción que tenga este código
+  //Busca la inscripción que tenga este código
     public InscripcionMateria getInscripcion(String codigoMateria){
        for(InscripcionMateria i : materias){ //por cada inscripción i dentro de la lista materias
         if (i.getMateria().getCodigo().equalsIgnoreCase(codigoMateria)) {
