@@ -31,11 +31,13 @@ public class Materia implements Consultable {
         }
     }
     
-    void setCuatrimestre(int cuatrimestre){
-        if (cuatrimestre != 1 && cuatrimestre !=2) {
+    public boolean setCuatrimestre(int cuatrimestre){
+        if (cuatrimestre != 1 && cuatrimestre != 2) {
             System.out.println("Error: Cuatrimestre debe ser 1 o 2");
+            return false;
         } else {
-            this.cuatrimestre = cuatrimestre; //guarda el valor que recibió el setter en el atributo del objeto.
+            this.cuatrimestre = cuatrimestre;
+            return true;
         }
     }
 

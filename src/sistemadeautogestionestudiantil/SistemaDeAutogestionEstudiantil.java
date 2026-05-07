@@ -2,6 +2,7 @@ package sistemadeautogestionestudiantil;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class SistemaDeAutogestionEstudiantil {
@@ -21,7 +22,23 @@ public class SistemaDeAutogestionEstudiantil {
         System.out.print("Ingresá tu carrera: ");
         String carrera = sc.nextLine().trim();
         System.out.print("Ingresá el año de ingreso: ");
-        int anioIngreso = sc.nextInt();
+        int anioIngreso = 0;
+        boolean valido = false;
+        while (!valido) {
+            try {
+                anioIngreso = sc.nextInt();
+                if (anioIngreso > 2026) {
+                System.out.println("Error: el año no puede ser mayor a 2026.");
+                System.out.print("Ingresá el año de ingreso: ");
+                } else {
+                    valido = true;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Error: ingresá solo números.");
+                sc.nextLine();
+                System.out.print("Ingresá el año de ingreso: ");
+            }
+        }
          alumno = new Estudiante(carrera, legajo, nombre, anioIngreso);
         System.out.println("\n¡Bienvenido/a, " + alumno.getNombre() + "!");
 
@@ -30,18 +47,19 @@ public class SistemaDeAutogestionEstudiantil {
     public static void menuPrincipal() {
         int opcion;
         do {
-            System.out.println("\n┌─────────────────────────────────┐");
+            System.out.println("┌───────────────────────────────────────┐");
             System.out.println("│         MENÚ PRINCIPAL          │");
-            System.out.println("├─────────────────────────────────┤");
+            System.out.println("├───────────────────────────────────────┤");
             System.out.println("│  1. Ver perfil del estudiante   │");
-            System.out.println("│  2. Gestión de materias         │");
+            System.out.println("│  2. Gestion de materias         │");
             System.out.println("│  3. Registrar asistencia        │");
-            System.out.println("│  4. Registrar calificación      │");
+            System.out.println("│  4. Registrar calificacion      │");
             System.out.println("│  5. Ver reportes                │");
             System.out.println("│  0. Salir                       │");
-            System.out.println("└─────────────────────────────────┘");
+            System.out.println("└───────────────────────────────────────┘");
             System.out.print("Opción: ");
-            opcion = sc.nextInt();
+            opcion = leerOpcion(sc);
+            sc.nextLine(); //limpiamos el buffer sino se queda con con el in anterioir
 
             switch (opcion) {
                 case 1 -> verPerfil();
@@ -77,7 +95,7 @@ public class SistemaDeAutogestionEstudiantil {
             System.out.println("  │  0. Volver                     │");
             System.out.println("  └─────────────────────────────────────┘");
             System.out.print("Opción: ");
-            opcion = sc.nextInt();
+            opcion = leerOpcion(sc);
 
             switch (opcion) {
                 case 1 -> inscribirseMateria();
@@ -91,22 +109,24 @@ public class SistemaDeAutogestionEstudiantil {
     }
 
     public static void inscribirseMateria() {
-        sc.nextLine();
 
         System.out.print("Nombre de la materia: ");
         String nombre = sc.nextLine().trim();
-
         System.out.print("Código: ");
         String codigo = sc.nextLine().trim().toUpperCase();
-
         System.out.print("Cuatrimestre (1 o 2): ");
-        int cuatrimestre = sc.nextInt();
-
+        int cuatrimestre = 0;
+        while (cuatrimestre != 1 && cuatrimestre != 2) {
+            cuatrimestre = leerOpcion(sc);
+            if (cuatrimestre != 1 && cuatrimestre != 2) {
+                System.out.print("Error: ingresá 1 o 2: ");
+            }
+        }
         System.out.print("Año: ");
-        int anio = sc.nextInt();
-
+        int anio = leerOpcion(sc);
         Materia m = new Materia(nombre, codigo, cuatrimestre, anio);
         alumno.inscribirse(m);                                       
+        System.out.println("¡¡¡ Te inscribiste correctamente a "+ m.getNombre()+" !!!");
     }
     
     public static void registrarAsistencia(){
@@ -167,7 +187,8 @@ public class SistemaDeAutogestionEstudiantil {
         System.out.println("  3. Por cuatrimestre");
         System.out.println("Opcion:");
         
-        int opt = sc.nextInt();
+        int opt = leerOpcion(sc);
+        
         
         switch (opt){
             case 1 -> {
@@ -186,7 +207,7 @@ public class SistemaDeAutogestionEstudiantil {
                }
             case 3 -> {
                 System.out.println("Cuatrimestre (1 o 2): ");
-                int cuat = sc.nextInt();
+                int cuat = leerOpcion(sc);
                 ArrayList<InscripcionMateria> res = alumno.getInscripcion(cuat);
                 if (res.isEmpty()) System.out.println("No se encontraron materias en ese cuatrimestre:");
                 else res.forEach(SistemaDeAutogestionEstudiantil::imprimirInscripcion);
@@ -223,7 +244,7 @@ public class SistemaDeAutogestionEstudiantil {
         }
 
         System.out.print("Nueva nota (0-10): ");
-        double nota = sc.nextDouble();
+        double nota = Double.parseDouble(sc.nextLine().trim());
         insc.agregarNota(nota);
 
         // Mostrar promedio actualizado
@@ -244,7 +265,7 @@ public class SistemaDeAutogestionEstudiantil {
             System.out.println("  │  0. Volver                     │");
             System.out.println("  └─────────────────────────────────────┘");
             System.out.print("Opción: ");
-            opcion = sc.nextInt();
+            opcion = leerOpcion(sc);
 
             switch (opcion) {
                 case 1 -> 
@@ -329,4 +350,11 @@ public class SistemaDeAutogestionEstudiantil {
         } while (opcion != 0);
 
     }
+            private static int leerOpcion(Scanner scanner) {
+                try {
+                    return Integer.parseInt(scanner.nextLine().trim());
+                } catch (NumberFormatException e) {
+                    return -1; // valor inválido que el switch/if no va a matchear
+                }
+            }
     }
