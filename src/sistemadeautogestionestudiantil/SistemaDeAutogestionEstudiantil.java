@@ -151,7 +151,7 @@ public class SistemaDeAutogestionEstudiantil {
     if (lista.isEmpty()){ System.out.println(" No tenes materias inscriptas."); return;}
         System.out.println("\n---Materias inscriptas---");
         for(InscripcionMateria i : lista){
-            System.out.printf(" %-6s %-20s | Cond: %-25s | Asist: %5.lf%% | Prom: %.2f%n", 
+            System.out.printf(" %-6s %-20s | Cond: %-25s | Asist: %.1f%%  | Prom: %.2f%n", 
                 i.getMateria().getCodigo(),
                 i.getMateria().getCodigo(),
                 i.getCondicion(),
@@ -273,8 +273,8 @@ public class SistemaDeAutogestionEstudiantil {
                     System.out.println("--------------------------------");
                     System.out.println("Promedio general: "+alumno.getPromedioGeneral());
                     System.out.println("Materias regulares: "+contRegular);
-                    System.out.println("Materias en riesgo: "+ alumno.getMateriasCriticas());
-                    System.out.println("Materias regulares: "+contLibre);
+                    System.out.println("Materias en riesgo: "+ alumno.getMateriasCriticas().size());
+                    System.out.println("Materias libres: "+contLibre);
                     System.out.println("--------------------------------");
                 }
                 
