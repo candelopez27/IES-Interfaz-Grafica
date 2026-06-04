@@ -9,7 +9,7 @@ public class Materia implements Consultable {
     private int cuatrimestre;
     private int anio;
     
-    Materia(String materia, String codigo, int cuatrimestre, int anio){
+    public Materia(String materia, String codigo, int cuatrimestre, int anio){
         this.nombre = materia;
         setCodigo(codigo);
         setCuatrimestre(cuatrimestre);
@@ -23,7 +23,7 @@ public class Materia implements Consultable {
     
     
     private static HashSet<String> codigos = new HashSet<>();
-    void setCodigo(String codigo){
+    public void setCodigo(String codigo){
         if (!codigos.contains(codigo)) {
             this.codigo = codigo;
             codigos.add(codigo);
@@ -41,7 +41,10 @@ public class Materia implements Consultable {
             return true;
         }
     }
-
+    public static void limpiarCodigos(){
+        codigos.clear();
+    }
+    
     @Override
     public void mostrarResumen() {
         System.out.println("=== MATERIA ===");
@@ -49,5 +52,12 @@ public class Materia implements Consultable {
         System.out.println("Código: " + codigo);
         System.out.println("Cuatrimestre: " + cuatrimestre);
         System.out.println("Año: " + anio);
+    }
+    public String toTexto(){
+    return nombre + ";" + codigo + ";" + cuatrimestre + ";" + anio;
+    }
+    public static Materia fromTexto(String linea){
+    String[] partes = linea.split(";");
+    return new Materia(partes[0], partes[1], Integer.parseInt(partes[2]), Integer.parseInt(partes[3]));
     }
 }
