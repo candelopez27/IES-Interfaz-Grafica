@@ -1,4 +1,4 @@
-package sistemadeautogestionestudiantil;
+package modelo;
 
 abstract class PersonaAcademica {
     private String nombre;

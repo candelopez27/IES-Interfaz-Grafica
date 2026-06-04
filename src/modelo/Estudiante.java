@@ -1,4 +1,5 @@
-package sistemadeautogestionestudiantil;
+package modelo;
+import modelo.Consultable;
 import java.util.ArrayList;
 
 public class Estudiante extends PersonaAcademica implements Consultable {

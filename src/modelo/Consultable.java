@@ -1,4 +1,4 @@
-package sistemadeautogestionestudiantil;
+package modelo;
 
 public interface Consultable {
      void mostrarResumen();

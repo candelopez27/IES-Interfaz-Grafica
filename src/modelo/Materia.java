@@ -1,5 +1,6 @@
-package sistemadeautogestionestudiantil;
+package modelo;
 
+import modelo.Consultable;
 import java.util.HashSet;
 
 public class Materia implements Consultable {

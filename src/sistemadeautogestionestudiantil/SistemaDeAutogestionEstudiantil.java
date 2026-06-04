@@ -1,4 +1,7 @@
-package sistemadeautogestionestudiantil;
+/*package sistemadeautogestionestudiantil;
+import modelo.Estudiante;
+import modelo.InscripcionMateria;
+import modelo.Materia;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -368,4 +371,4 @@ public class SistemaDeAutogestionEstudiantil {
                     return -1; // valor inválido que el switch/if no va a matchear
                 }
             }
-    }
+    }*/

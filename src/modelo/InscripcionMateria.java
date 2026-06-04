@@ -1,5 +1,7 @@
-package sistemadeautogestionestudiantil;
+package modelo;
 
+import modelo.Evaluable;
+import modelo.Materia;
 import java.util.ArrayList;
 
 public class InscripcionMateria implements Evaluable{

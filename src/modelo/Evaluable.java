@@ -1,4 +1,4 @@
-package sistemadeautogestionestudiantil;
+package modelo;
 
 public interface Evaluable {
     String getCondicion();
