@@ -87,5 +87,40 @@ public class InscripcionMateria implements Evaluable{
             return true;
         } else{ return false;}
     }
+    
+    
+    public String toTexto() {
+        // formato: codigoMateria,totalClases,clasesAsistidas,nota1;nota2;nota3
+        StringBuilder sb = new StringBuilder();
+        sb.append(materia.getCodigo()).append(",")
+          .append(totalClases).append(",")
+          .append(clasesAsistidas).append(",");
 
+        for (int i = 0; i < notas.size(); i++) {
+            sb.append(notas.get(i));
+            if (i < notas.size() - 1) sb.append(";");
+        }
+        return sb.toString();
+    }
+
+    public static InscripcionMateria fromTexto(String linea, ArrayList<Materia> materias) {
+        String[] p = linea.split(",");
+        String codigoMateria = p[0];
+
+        Materia m = null;
+        for (Materia mat : materias) {
+            if (mat.getCodigo().equals(codigoMateria)) { m = mat; break; }
+        }
+
+        InscripcionMateria ins = new InscripcionMateria(m);
+        ins.totalClases     = Integer.parseInt(p[1]);
+        ins.clasesAsistidas = Integer.parseInt(p[2]);
+
+        if (p.length > 3 && !p[3].isEmpty()) {
+            for (String n : p[3].split(";")) {
+                ins.notas.add(Double.parseDouble(n));
+            }
+        }
+        return ins;
+    }
 }
