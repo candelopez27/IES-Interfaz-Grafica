@@ -22,7 +22,7 @@ public class Materia implements Consultable {
     public int getAnio(){ return anio;}
     
     
-    private static HashSet<String> codigos = new HashSet<>();
+    private HashSet<String> codigos = new HashSet<>();
     void setCodigo(String codigo){
         if (!codigos.contains(codigo)) {
             this.codigo = codigo;
