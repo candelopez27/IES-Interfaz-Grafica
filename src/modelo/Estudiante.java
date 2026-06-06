@@ -117,6 +117,14 @@ public class Estudiante extends PersonaAcademica implements Consultable {
         System.out.println("Año ingreso: " + anioIngreso);
         System.out.println("Cantidad de materias: " + materias.size());
    }   
+    public String toTexto() {
+        return getNombre() + "," + getLegajo() + "," + carrera + "," + anioIngreso;
+    }
+
+    public static Estudiante fromTexto(String linea) {
+        String[] p = linea.split(",");
+        return new Estudiante(p[2], p[1], p[0], Integer.parseInt(p[3]));
+    }
 }
 
 
