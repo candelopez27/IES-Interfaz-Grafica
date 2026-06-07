@@ -86,4 +86,34 @@ public class Controlador {
     public double getPromedioGeneral() {
         return estudiante.getPromedioGeneral();
     }
+    public String crearMateria(String nombre, String codigo, 
+                             String cuatrStr, String anioStr) {
+    // Validaciones
+    if (nombre.isBlank() || codigo.isBlank() || 
+        cuatrStr.isBlank() || anioStr.isBlank()) {
+        return "Completá todos los campos.";
+    }
+    if (codigo.length() < 3 || codigo.length() > 10) {
+        return "El código debe tener entre 3 y 10 caracteres.";
+    }
+    
+    int cuatrimestre, anio;
+    try {
+        cuatrimestre = Integer.parseInt(cuatrStr);
+        anio = Integer.parseInt(anioStr);
+    } catch (NumberFormatException e) {
+        return "Cuatrimestre y año deben ser números.";
+    }
+    
+    if (cuatrimestre != 1 && cuatrimestre != 2) {
+        return "El cuatrimestre debe ser 1 o 2.";
+    }
+    
+    Materia m = new Materia(nombre, codigo, cuatrimestre, anio);
+    estudiante.inscribirse(m);
+    materiaDAO.guardarMaterias(getMaterias());
+    inscripcionDAO.guardarInscripciones(estudiante.getMaterias());
+    
+    return null; // null = éxito
+}
 }
