@@ -16,27 +16,70 @@ public class Controlador {
     private EstudianteDAO estudianteDAO;
 
     public Controlador() {
-        this.materiaDAO      = new MateriaDAO();
-        this.inscripcionDAO  = new InscripcionDAO();
-        this.estudianteDAO   = new EstudianteDAO();
+        this.materiaDAO     = new MateriaDAO();
+        this.inscripcionDAO = new InscripcionDAO();
+        this.estudianteDAO  = new EstudianteDAO();
 
-        // carga los datos al iniciar
         this.estudiante = estudianteDAO.cargarEstudiante();
-        ArrayList<Materia> materias = materiaDAO.leerMaterias();
-        ArrayList<InscripcionMateria> inscripciones = 
-                  inscripcionDAO.cargarInscripciones(materias);
 
-        for (InscripcionMateria ins : inscripciones) {
-            estudiante.getMaterias().add(ins);
+        // solo carga materias e inscripciones si el estudiante existe
+        if (this.estudiante != null) {
+            ArrayList<Materia> materias = materiaDAO.leerMaterias();
+            ArrayList<InscripcionMateria> inscripciones =
+                    inscripcionDAO.cargarInscripciones(materias);
+            for (InscripcionMateria ins : inscripciones) {
+                this.estudiante.getMaterias().add(ins);
+            }
         }
     }
 
-    public void inscribirMateria(String nombre, String codigo,
-                                  int cuatrimestre, int anio) {
-        Materia m = new Materia(nombre, codigo, cuatrimestre, anio);
-        estudiante.inscribirse(m);
-        materiaDAO.guardarMaterias(getMaterias());
-        inscripcionDAO.guardarInscripciones(estudiante.getMaterias());
+    // verifica si el legajo ingresado corresponde al estudiante guardado
+    public boolean login(String legajo) {
+        if (estudiante != null && estudiante.getLegajo().equalsIgnoreCase(legajo)) {
+            return true;
+        }
+        return false;
+    }
+
+    // devuelve true si hay un estudiante guardado en el archivo
+    public boolean existeEstudiante() {
+        return this.estudiante != null;
+    }
+
+    // la VentanaRegistro llama a este método cuando el usuario completa el formulario
+    public String crearEstudiante(String nombre, String legajo,
+                                   String carrera, String anioStr) {
+        if (nombre.isBlank() || legajo.isBlank() ||
+            carrera.isBlank() || anioStr.isBlank()) {
+            return "Completá todos los campos.";
+        }
+        try {
+            int anio = Integer.parseInt(anioStr);
+            this.estudiante = new Estudiante(carrera, legajo, nombre, anio);
+            estudianteDAO.guardarEstudiante(this.estudiante);
+            return null; // null = éxito
+        } catch (NumberFormatException e) {
+            return "El año debe ser un número.";
+        } catch (IllegalArgumentException e) {
+            return e.getMessage(); // captura validaciones de PersonaAcademica
+        }
+    }
+
+    public void inscribirMateria(String nombre, String codigo,int cuatrimestre, int anio) {
+        ArrayList<Materia> todasLasMaterias = materiaDAO.leerMaterias();
+
+        // busca la materia en el archivo en lugar de crearla nueva
+        Materia materiaExistente = null;
+        for (Materia m : todasLasMaterias) {
+            if (m.getCodigo().equalsIgnoreCase(codigo)) {
+                materiaExistente = m;
+                break;
+            }
+        }
+        if (materiaExistente != null) {
+            estudiante.inscribirse(materiaExistente);
+            inscripcionDAO.guardarInscripciones(estudiante.getMaterias());
+        }
     }
 
     public void darDeBaja(String codigoMateria) {
@@ -61,8 +104,6 @@ public class Controlador {
         }
     }
 
-    // --- datos para la Vista ---
-
     public Estudiante getEstudiante() {
         return estudiante;
     }
@@ -86,34 +127,47 @@ public class Controlador {
     public double getPromedioGeneral() {
         return estudiante.getPromedioGeneral();
     }
-    public String crearMateria(String nombre, String codigo, 
-                             String cuatrStr, String anioStr) {
-    // Validaciones
-    if (nombre.isBlank() || codigo.isBlank() || 
-        cuatrStr.isBlank() || anioStr.isBlank()) {
-        return "Completá todos los campos.";
+
+    public String crearMateria(String nombre, String codigo, String cuatrStr, String anioStr) {
+        if (nombre.isBlank() || codigo.isBlank() ||
+            cuatrStr.isBlank() || anioStr.isBlank()) {
+            return "Completá todos los campos.";
+        }
+        if (codigo.length() < 3 || codigo.length() > 10) {
+            return "El código debe tener entre 3 y 10 caracteres.";
+        }
+        int cuatrimestre, anio;
+        try {
+            cuatrimestre = Integer.parseInt(cuatrStr);
+            anio = Integer.parseInt(anioStr);
+        } catch (NumberFormatException e) {
+            return "Cuatrimestre y año deben ser números.";
+        }
+        if (cuatrimestre != 1 && cuatrimestre != 2) {
+            return "El cuatrimestre debe ser 1 o 2.";
+        }
+        
+        ArrayList<Materia> todas = materiaDAO.leerMaterias();
+        todas.add(new Materia(nombre, codigo, cuatrimestre, anio));
+        materiaDAO.guardarMaterias(todas);
+        return null;
     }
-    if (codigo.length() < 3 || codigo.length() > 10) {
-        return "El código debe tener entre 3 y 10 caracteres.";
+    public ArrayList<Materia> getMateriasDisponibles() {
+        ArrayList<Materia> todasLasMaterias = materiaDAO.leerMaterias();
+        ArrayList<Materia> inscriptas = getMaterias();
+
+        // filtra las que el estudiante ya tiene
+        ArrayList<Materia> disponibles = new ArrayList<>();
+        for (Materia m : todasLasMaterias) {
+            boolean yaInscripta = false;
+            for (Materia i : inscriptas) {
+                if (i.getCodigo().equalsIgnoreCase(m.getCodigo())) {
+                    yaInscripta = true;
+                    break;
+                }
+            }
+            if (!yaInscripta) disponibles.add(m);
+        }
+        return disponibles;
     }
-    
-    int cuatrimestre, anio;
-    try {
-        cuatrimestre = Integer.parseInt(cuatrStr);
-        anio = Integer.parseInt(anioStr);
-    } catch (NumberFormatException e) {
-        return "Cuatrimestre y año deben ser números.";
-    }
-    
-    if (cuatrimestre != 1 && cuatrimestre != 2) {
-        return "El cuatrimestre debe ser 1 o 2.";
-    }
-    
-    Materia m = new Materia(nombre, codigo, cuatrimestre, anio);
-    estudiante.inscribirse(m);
-    materiaDAO.guardarMaterias(getMaterias());
-    inscripcionDAO.guardarInscripciones(estudiante.getMaterias());
-    
-    return null; // null = éxito
-}
 }

@@ -4,6 +4,9 @@
  */
 package vista;
 
+import controlador.Controlador;
+import modelo.Materia;
+
 public class VentanaPrincipal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName());
@@ -11,21 +14,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form VentanaPricipal
      */
-    public VentanaPrincipal() {
+    public VentanaPrincipal(Controlador controlador1) {
         initComponents();
+        this.controlador = controlador1;
+        configurarTabla();
         panelMaterias.add(panelBotones, java.awt.BorderLayout.NORTH);
         panelMaterias.add(jScrollPane1, java.awt.BorderLayout.CENTER);
         panelMaterias.add(lstAlertas, java.awt.BorderLayout.SOUTH);
+        btnInscribir.addActionListener(e -> accionInscribir());
         btnDarDeBaja.addActionListener(e -> accionDarDeBaja());
-        
-    this.controlador = new controlador.Controlador();
-    
-    btnCrearMat.addActionListener(e -> {
-        CrearMateria dialogo = new CrearMateria(this, true, controlador);
-        dialogo.setVisible(true);
-    });
-    
-    inicializar();
+        btnCrearMat.addActionListener(e -> {
+            CrearMateria dialogo = new CrearMateria(this, true, controlador);
+            dialogo.setLocationRelativeTo(this);
+            dialogo.setVisible(true);
+            actualizarTabla();
+        });
+        inicializar();
     }
 
     @SuppressWarnings("unchecked")
@@ -136,10 +140,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnInscribir.setBackground(new java.awt.Color(83, 74, 183));
         btnInscribir.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnInscribir.setText("Inscribir");
+        btnInscribir.addActionListener(this::btnInscribirActionPerformed);
         panelBotones.add(btnInscribir);
 
         btnDarDeBaja.setBackground(new java.awt.Color(220, 50, 50));
         btnDarDeBaja.setText("Dar de baja");
+        btnDarDeBaja.addActionListener(this::btnDarDeBajaActionPerformed);
         panelBotones.add(btnDarDeBaja);
 
         btnRegistrarNota.setBackground(new java.awt.Color(238, 237, 254));
@@ -232,81 +238,57 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearMatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearMatActionPerformed
-        CrearMateria dialogo = new CrearMateria(this, true, controlador);
-    dialogo.setVisible(true);       
+      
     }//GEN-LAST:event_btnCrearMatActionPerformed
+
+    private void btnInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInscribirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnInscribirActionPerformed
+
+    private void btnDarDeBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDarDeBajaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDarDeBajaActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new VentanaPrincipal().setVisible(true));
-    }
-
-    // ── Atributos ──────────────────────────────────────────────────────────
-      private dao.MateriaDAO materiaDAO = new dao.MateriaDAO();
-      private dao.InscripcionDAO inscripcionDAO = new dao.InscripcionDAO();
-      private java.util.ArrayList<modelo.Materia> todasLasMaterias;
-      private java.util.ArrayList<modelo.InscripcionMateria> inscripciones;
 
     // ── Inicialización ─────────────────────────────────────────────────────
-       private void inicializar() {
-    todasLasMaterias = materiaDAO.leerMaterias();
-    inscripciones    = inscripcionDAO.cargarInscripciones(todasLasMaterias);
-    actualizarTabla();
-    btnInscribir.addActionListener(e -> accionInscribir());
-    btnDarDeBaja.addActionListener(e -> accionDarDeBaja());
-}
+    private void inicializar() {
+        actualizarTabla();
+    }
 
     // ── Actualizar la JTable ───────────────────────────────────────────────
     private void actualizarTabla() {
-     javax.swing.table.DefaultTableModel modeloTabla =
-        (javax.swing.table.DefaultTableModel) jTable1.getModel();
-     modeloTabla.setRowCount(0);
+        javax.swing.table.DefaultTableModel modeloTabla =
+             (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        modeloTabla.setRowCount(0);
 
-    for (modelo.InscripcionMateria insc : inscripciones) {
-        modeloTabla.addRow(new Object[]{
-            insc.getMateria().getNombre(),
-            insc.getCondicion(),
-            String.format("%.0f%%", insc.getPorcentajeAsistencia()),
-            String.format("%.2f", insc.getPromedio())
-        });
-    }
-}
-
-// ── Botón Inscribir ────────────────────────────────────────────────────
-    private void accionInscribir() {
-    // Códigos ya inscriptos
-    java.util.ArrayList<String> codigosInscritos = new java.util.ArrayList<>();
-    for (modelo.InscripcionMateria insc : inscripciones) {
-        codigosInscritos.add(insc.getMateria().getCodigo());
-    }
-
-    // Materias disponibles (no inscriptas aún)
-    java.util.ArrayList<modelo.Materia> disponibles = new java.util.ArrayList<>();
-    for (modelo.Materia m : todasLasMaterias) {
-        if (!codigosInscritos.contains(m.getCodigo())) {
-            disponibles.add(m);
+        for (modelo.InscripcionMateria insc : controlador.getInscripciones()) {
+            modeloTabla.addRow(new Object[]{
+                 insc.getMateria().getNombre(),
+                 insc.getCondicion(),
+                 String.format("%.0f%%", insc.getPorcentajeAsistencia()),
+                 String.format("%.2f", insc.getPromedio())
+             });
         }
     }
+    private void configurarTabla() {
+        javax.swing.table.DefaultTableModel modeloTabla = 
+            new javax.swing.table.DefaultTableModel(
+                new Object[]{"Materia", "Condición", "Asistencia", "Promedio"}, 0
+            ) {
+                @Override
+                public Class<?> getColumnClass(int columnIndex) {
+                    return String.class; // todas las columnas son String
+                }
+            };
+        jTable1.setModel(modeloTabla);
+    }
+
+// ── Botón Inscribir ────────────────────────────────────────────────────
+private void accionInscribir() {
+   java.util.ArrayList<modelo.Materia> disponibles = controlador.getMateriasDisponibles();
 
     if (disponibles.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this,
@@ -315,7 +297,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         return;
     }
 
-    // Nombres para mostrar en el diálogo
     String[] opciones = new String[disponibles.size()];
     for (int i = 0; i < disponibles.size(); i++) {
         modelo.Materia m = disponibles.get(i);
@@ -328,80 +309,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         "Seleccioná una materia para inscribirte:",
         "Inscribir materia",
         javax.swing.JOptionPane.PLAIN_MESSAGE,
-        null,
-        opciones,
-        opciones[0]
+        null, opciones, opciones[0]
     );
 
-    if (seleccion == null) return; // canceló
+    if (seleccion == null) return;
 
-    // Buscar la materia elegida por índice
     int idx = java.util.Arrays.asList(opciones).indexOf(seleccion);
-    modelo.Materia materiaElegida = disponibles.get(idx);
+    modelo.Materia elegida = disponibles.get(idx);
 
-    // Crear inscripción, guardar y actualizar tabla
-    modelo.InscripcionMateria nueva = new modelo.InscripcionMateria(materiaElegida);
-    inscripciones.add(nueva);
-    inscripcionDAO.guardarInscripciones(inscripciones);
+    // el controlador se encarga de inscribir y guardar
+    controlador.inscribirMateria(elegida.getNombre(), elegida.getCodigo(),
+                                  elegida.getCuatrimestre(), elegida.getAnio());
     actualizarTabla();
 
     javax.swing.JOptionPane.showMessageDialog(this,
-        "Te inscribiste en: " + materiaElegida.getNombre(),
+        "Te inscribiste en: " + elegida.getNombre(),
         "¡Inscripción exitosa!", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    
-}
-    // ── Botón Dar de Baja ──────────────────────────────────────────────────
-    private void accionDarDeBaja() {
-    if (inscripciones.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "No tenés materias inscriptas.",
-            "Sin inscripciones", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        return;
-    }
-
-    // Armar opciones con las materias inscriptas
-    String[] opciones = new String[inscripciones.size()];
-    for (int i = 0; i < inscripciones.size(); i++) {
-        modelo.Materia m = inscripciones.get(i).getMateria();
-        opciones[i] = m.getNombre() + " (Cuat. " + m.getCuatrimestre()
-                    + " - Año " + m.getAnio() + ")";
-    }
-
-    String seleccion = (String) javax.swing.JOptionPane.showInputDialog(
-        this,
-        "Seleccioná la materia de la que querés darte de baja:",
-        "Dar de baja",
-        javax.swing.JOptionPane.PLAIN_MESSAGE,
-        null,
-        opciones,
-        opciones[0]
-    );
-
-    if (seleccion == null) return; // canceló
-
-    int idx = java.util.Arrays.asList(opciones).indexOf(seleccion);
-    modelo.InscripcionMateria aEliminar = inscripciones.get(idx);
-    String nombreMateria = aEliminar.getMateria().getNombre();
-
-    // Confirmar antes de eliminar
-    int confirmar = javax.swing.JOptionPane.showConfirmDialog(
-        this,
-        "¿Estás segura de que querés darte de baja de \"" + nombreMateria + "\"?\n"
-        + "Se perderán las notas y asistencia registradas.",
-        "Confirmar baja",
-        javax.swing.JOptionPane.YES_NO_OPTION,
-        javax.swing.JOptionPane.WARNING_MESSAGE
-    );
-
-    if (confirmar != javax.swing.JOptionPane.YES_OPTION) return;
-
-    inscripciones.remove(idx);
-    inscripcionDAO.guardarInscripciones(inscripciones);
-    actualizarTabla();
-
-    javax.swing.JOptionPane.showMessageDialog(this,
-        "Te diste de baja de: " + nombreMateria,
-        "Baja exitosa", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearMat;
@@ -434,4 +357,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelMaterias;
     private javax.swing.JPanel panelReportes;
     // End of variables declaration//GEN-END:variables
+
+    private void accionDarDeBaja() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
