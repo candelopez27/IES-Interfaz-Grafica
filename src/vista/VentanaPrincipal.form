@@ -191,6 +191,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Inscribir"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInscribirActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnDarDeBaja">
                   <Properties>
@@ -199,6 +202,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Dar de baja"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDarDeBajaActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnRegistrarNota">
                   <Properties>
