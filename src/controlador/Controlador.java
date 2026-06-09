@@ -96,13 +96,15 @@ public class Controlador {
         }
     }
 
-    public void registrarNota(String codigoMateria, double nota) {
-        InscripcionMateria ins = estudiante.getInscripcion(codigoMateria);
-        if (ins != null) {
-            ins.agregarNota(nota);
-            inscripcionDAO.guardarInscripciones(estudiante.getMaterias());
-        }
-    }
+   public String registrarNota(String codigoMateria, double nota) {
+    if (nota < 0 || nota > 10) return "La nota debe estar entre 0 y 10.";
+    InscripcionMateria ins = estudiante.getInscripcion(codigoMateria);
+    if (ins == null) return "Materia no encontrada.";
+    if (ins.getNotas().size() >= 5) return "Ya tiene 5 notas registradas.";
+    ins.agregarNota(nota);
+    inscripcionDAO.guardarInscripciones(estudiante.getMaterias());
+    return null;
+}
 
     public Estudiante getEstudiante() {
         return estudiante;
