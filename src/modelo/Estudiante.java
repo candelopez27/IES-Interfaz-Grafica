@@ -125,6 +125,13 @@ public class Estudiante extends PersonaAcademica implements Consultable {
         String[] p = linea.split(",");
         return new Estudiante(p[2], p[1], p[0], Integer.parseInt(p[3]));
     }
+    public String getCarrera() {
+    return carrera;
+    }
+
+    public int getAnioIngreso() {
+     return anioIngreso;
+    }
 }
 
 
