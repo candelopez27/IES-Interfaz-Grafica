@@ -407,6 +407,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
        mostrarReporteRiesgo();
     java.awt.CardLayout cl = (java.awt.CardLayout) panelCentral.getLayout();
     cl.show(panelCentral, "card3");
+    
     }//GEN-LAST:event_itemenRiesgoActionPerformed
 
     /**
