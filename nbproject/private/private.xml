@@ -8,11 +8,9 @@
             <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/modelo/InscripcionMateria.java</file>
             <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/dao/EstudianteDAO.java</file>
             <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/dao/InscripcionDAO.java</file>
-            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/controlador/Controlador.java</file>
-            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/vista/VentanaPrincipal.java</file>
             <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/dao/MateriaDAO.java</file>
-            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/vista/CrearMateria.java</file>
             <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/vista/VentanaRegistroIngresar.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/modelo/Materia.java</file>
         </group>
     </open-files>
 </project-private>
