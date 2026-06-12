@@ -16,6 +16,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal(Controlador controlador1) {
         initComponents();
+        this.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            confirmarSalida();
+            }
+        });
         this.controlador = controlador1;
         configurarTabla();
         panelMaterias.add(panelBotones, java.awt.BorderLayout.NORTH);
@@ -31,10 +38,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         inicializar();
     }
-    
-
- 
-
+    private void confirmarSalida() {
+        int opcion = javax.swing.JOptionPane.showConfirmDialog(
+            this, 
+            "¿Seguro que desea salir del Sistema de Autogestión?", 
+            "Confirmar Salida", 
+            javax.swing.JOptionPane.YES_NO_OPTION,
+            javax.swing.JOptionPane.QUESTION_MESSAGE
+        );
+        
+        if (opcion == javax.swing.JOptionPane.YES_OPTION) {
+            System.exit(0); 
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -201,7 +217,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         btnNota.setBackground(new java.awt.Color(238, 237, 254));
         btnNota.setForeground(new java.awt.Color(83, 74, 183));
-        btnNota.setText("Nota");
+        btnNota.setText("Asistencia");
         btnNota.addActionListener(this::btnNotaActionPerformed);
         panelBotones.add(btnNota);
 
@@ -264,22 +280,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(panelReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(panelReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(panelMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(8, 8, 8)
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(10, Short.MAX_VALUE))
+                                .addGap(170, 170, 170)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(28, 28, 28))
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,14 +309,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addComponent(jLabel1)))
                 .addGap(5, 5, 5)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(panelReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(panelMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(77, Short.MAX_VALUE))
+                        .addGap(1, 1, 1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
 
         jLabel1.getAccessibleContext().setAccessibleName("");
@@ -327,6 +344,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuReporte.add(itemenRiesgo);
 
         itemAprobado.setText("Materias aprobadas");
+        itemAprobado.addActionListener(this::itemAprobadoActionPerformed);
         jMenuReporte.add(itemAprobado);
 
         jMenuBar1.add(jMenuReporte);
@@ -415,9 +433,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     cl.show(panelCentral, "card3");
     }//GEN-LAST:event_itemenRiesgoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void itemAprobadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAprobadoActionPerformed
+        String reporte = controlador.obtenerReporteMateriasAprobadas();
+        txtAreaReportes.setText(reporte); 
+        java.awt.CardLayout cl = (java.awt.CardLayout) panelCentral.getLayout();
+        cl.show(panelCentral, "card3");
+    }//GEN-LAST:event_itemAprobadoActionPerformed
 
     // ── Inicialización ─────────────────────────────────────────────────────
     private void inicializar() {

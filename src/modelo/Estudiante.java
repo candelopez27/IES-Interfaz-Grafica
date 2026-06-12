@@ -132,6 +132,37 @@ public class Estudiante extends PersonaAcademica implements Consultable {
     public int getAnioIngreso() {
      return anioIngreso;
     }
+    
+    public String getReporteMateriasAprobadas() {
+        int aprobadas = 0;
+        double notaMax = 0;
+        double notaMin = 10;
+        double sumaPromedios = 0;
+        
+        for (InscripcionMateria ins : this.materias) {
+            // Invoca a la lógica nativa del modelo que implementa Evaluable
+            if (ins.estaAprobada()) { 
+                aprobadas++;
+                double promedioMateria = ins.getPromedio();
+                sumaPromedios += promedioMateria;
+                
+                if (promedioMateria > notaMax) notaMax = promedioMateria;
+                if (promedioMateria < notaMin) notaMin = promedioMateria;
+            }
+        }
+        
+        if (aprobadas == 0) {
+            return "El estudiante no posee materias aprobadas en su historial académico.";
+        }
+        
+        double promedioGeneral = sumaPromedios / aprobadas;
+        
+        return "=== REPORTE DE MATERIAS APROBADAS ===\n" +
+               "Cantidad de materias aprobadas: " + aprobadas + "\n" +
+               "Nota Promedio Máxima alcanzada: " + notaMax + "\n" +
+               "Nota Promedio Mínima alcanzada: " + notaMin + "\n" +
+               "Promedio General del conjunto aprobado: " + String.format("%.2f", promedioGeneral);
+    }
 }
 
 

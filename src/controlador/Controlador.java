@@ -171,11 +171,10 @@ public class Controlador {
         
         // 1. Persiste la nota en archivo de texto obligatorio
         inscripcionDAO.guardarInscripciones(estudiante.getMaterias());
-        
-        // 2. BONUS: Impacta en MySQL asegurando primero al estudiante
+
         try {
             if (estudiante != null) {
-                estudianteMySQLDAO.guardarEstudiante(this.estudiante); // Asegura FK
+                estudianteMySQLDAO.guardarEstudiante(this.estudiante); 
                 inscripcionMySQLDAO.guardarInscripcion(this.estudiante.getLegajo(), ins);
             }
         } catch (Exception e) {
@@ -261,4 +260,11 @@ public class Controlador {
         }
         return disponibles;
     }
+    
+    public String obtenerReporteMateriasAprobadas() {
+        if (this.estudiante == null) {
+            return "No hay ningún estudiante registrado o logueado en el sistema.";
+        }
+            return this.estudiante.getReporteMateriasAprobadas();
+        }
 }
