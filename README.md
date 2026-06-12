@@ -45,7 +45,6 @@ Links a conversaciones de Candela:
 Documentación de Guadalupe (promps y video):
 - [https://drive.google.com/drive/folders/1Np90drfxH5iQxy-YmBdz2l-0J-v7s9YA ]
 ----------------------------------------------------------------------------------------------------------------------------
-# IES-Interfaz-Grafica
 # IE2
 
 ## Objetivo
@@ -57,6 +56,7 @@ reportes de su situación general.
 Este proyecto aplica arquitectura MVC + DAO con persistencia en archivos de texto (.txt) 
 y como bonus una capa paralela de persistencia en MySQL mediante JDBC.
 
+## FIGMA: https://www.figma.com/design/IPiFLc49q3imcI12YmHmoJ/Bienvenida?node-id=10-23&t=69J37ZVVdidazrwD-1 
 ---
 
 ## 🏗️ Arquitectura — IE2
@@ -187,4 +187,4 @@ CREATE TABLE IF NOT EXISTS inscripciones (
 - 📁 [Carpeta con prompts y video](https://drive.google.com/drive/folders/1Np90drfxH5iQxy-YmBdz2l-0J-v7s9YA)
 
 ### Gimena Romero
-- [link de prompts y video de Gimena]
+- 📁 [Carpeta con prompts y video](https://drive.google.com/drive/folders/1B-NCPPKvXh4p_UBMo-47e7wK5N4VXygy)
