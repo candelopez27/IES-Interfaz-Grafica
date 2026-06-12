@@ -12,6 +12,7 @@ public class VentanaRegistroIngresar extends javax.swing.JFrame {
         initComponents();
         this.controlador = controlador;
         panelRegistro.setVisible(false); //lo vuelve invisible hasta que se valide que existe su legajo en la base
+        this.getRootPane().setDefaultButton(btnIngresar);
     }
 
 
@@ -257,25 +258,55 @@ public class VentanaRegistroIngresar extends javax.swing.JFrame {
 
     private void btnResgistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResgistrarActionPerformed
         String nombre = txtNombreEstudiante.getText().trim();
-        String legajo = txtFLegajo.getText(); // ya tiene el legajo ingresado antes
+        String legajo = txtLegajo.getText().trim();
         String carrera = txtCarrera.getText().trim();
         String anio = txtAnio.getText().trim();
 
+        // 1. verificamos que los campos no estén vacíos
+        if (nombre.isEmpty() || legajo.isEmpty() || carrera.isEmpty() || anio.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 2. Verificamos formato numérico en la Vista
+        try {
+            Integer.parseInt(legajo); 
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El legajo debe contener solo números.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+            return; 
+        }
+
+        try {
+            Integer.parseInt(anio);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El año de ingreso debe contener solo números.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Si el formato es correcto, se envía al controlador para la lógica de negocio
         String resultado = controlador.crearEstudiante(nombre, legajo, carrera, anio);
 
         if (resultado == null) {
             JOptionPane.showMessageDialog(this, 
                 "¡Registro exitoso! Ahora ingresá con tu legajo.",
                 "Bienvenido/a", JOptionPane.INFORMATION_MESSAGE);
-            // vuelve al login
+
+            // Vuelve al login
             panelRegistro.setVisible(false);
             txtFLegajo.setVisible(true);
             btnIngresar.setVisible(true);
             lblSubtitulo.setVisible(true);
-            txtFLegajo.setText("");
+
+            // Limpiamos todo y le dejamos el legajo listo en el campo de login
+            txtFLegajo.setText(legajo); 
+            txtNombreEstudiante.setText("");
+            txtLegajo.setText("");
+            txtCarrera.setText("");
+            txtAnio.setText("");
         } else {
             JOptionPane.showMessageDialog(this, resultado, "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_btnResgistrarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

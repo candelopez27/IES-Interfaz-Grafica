@@ -1,8 +1,1 @@
-Actualización tecnológica,ACT1,1,2026
-Comunicación e investigación,null,1,2026
-Ingles ,ING1,2,2026
-Gestión de proyectos,GES1,2,2026
-Matemáticas,MAT01,1,2026
-Ética y deontología profesional,EYDP02,2,2026
-Practica profesionalizante l,PRA01,2,2026
-ADSAD,FSDF1,2,2026
+Matemática aplicada,MAT02,2,2026
