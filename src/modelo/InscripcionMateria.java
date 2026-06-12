@@ -60,6 +60,14 @@ public class InscripcionMateria implements Evaluable{
         return acumulador/notas.size();
     }
     
+    public int getTotalClases() {
+        return totalClases;
+    }
+
+    public int getClasesAsistidas() {
+        return clasesAsistidas;
+    }
+    
     public void registrarAsistencia(boolean presente){
         totalClases++;
         if (presente) {
