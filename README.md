@@ -44,6 +44,147 @@ Links a conversaciones de Candela:
 
 Documentación de Guadalupe (promps y video):
 - [https://drive.google.com/drive/folders/1Np90drfxH5iQxy-YmBdz2l-0J-v7s9YA ]
+----------------------------------------------------------------------------------------------------------------------------
+# IES-Interfaz-Grafica
+# IE2
 
+## Objetivo
+Desarrollar en Java una aplicación de escritorio con interfaz gráfica (Swing) que simule 
+un sistema de autogestión estudiantil. El sistema permite a un estudiante registrar sus 
+materias, gestionar asistencias y calificaciones, conocer su condición académica y obtener 
+reportes de su situación general.
 
-  
+Este proyecto aplica arquitectura MVC + DAO con persistencia en archivos de texto (.txt) 
+y como bonus una capa paralela de persistencia en MySQL mediante JDBC.
+
+---
+
+## 🏗️ Arquitectura — IE2
+src/
+
+├── controlador/
+
+│   └── Controlador.java
+
+├── modelo/
+
+│   ├── PersonaAcademica.java
+
+│   ├── Estudiante.java
+
+│   ├── Materia.java
+
+│   ├── InscripcionMateria.java
+
+│   ├── Evaluable.java
+
+│   └── Consultable.java
+
+├── vista/
+
+│   ├── VentanaPrincipal.java
+
+│   ├── VentanaRegistroIngresar.java
+
+│   └── CrearMateria.java
+
+└── dao/
+
+├── EstudianteDAO.java
+
+├── MateriaDAO.java
+
+├── InscripcionDAO.java
+
+└── mysql/
+
+├── Conexion.java
+
+├── EstudianteDAOMYSQL.java
+
+├── MateriaDAOMySQL.java
+
+└── InscripcionMateriaDAOMySQL.java
+
+| Capa | Responsabilidad |
+|------|----------------|
+| Vista | Interfaz gráfica con Swing. Captura datos, muestra resultados, valida formato |
+| Controlador | Coordina la lógica de negocio entre Vista y DAO. Sin imports de Swing |
+| DAO (.txt) | Lee y escribe archivos de texto usando toTexto() / fromTexto() del modelo |
+| DAO (MySQL) | Capa bonus: replica los datos en base relacional vía JDBC |
+| Modelo | Entidades del sistema con lógica de negocio. Sin referencias a Vista ni DAO |
+
+---
+
+## ▶️ Instrucciones de ejecución
+
+### Requisitos
+- Java 17 o superior
+- NetBeans 17 o superior
+- XAMPP (solo para el bonus MySQL)
+- mysql-connector-j.jar agregado a las librerías del proyecto
+
+### Ejecución básica (persistencia .txt)
+1. Clonar el repositorio
+2. Abrir el proyecto en NetBeans
+3. Ejecutar `VentanaRegistroIngresar.java` como clase principal
+4. La primera vez: completar el formulario de registro
+5. Las siguientes veces: ingresar el legajo para hacer login
+
+---
+
+## 🗄️ Bonus — Base de datos MySQL (JDBC)
+
+El sistema incluye una capa paralela de persistencia en MySQL que funciona junto con los archivos `.txt` obligatorios. Si MySQL no está activo, la aplicación sigue funcionando normalmente.
+
+### Instrucciones para crear la base de datos
+
+1. Iniciar **Apache** y **MySQL** desde el panel de XAMPP
+2. Ir a `http://localhost/phpmyadmin/`
+3. Ir a la pestaña **SQL**
+4. Copiar y ejecutar el siguiente script:
+
+```sql
+CREATE DATABASE IF NOT EXISTS autogestion_estudiantil;
+USE autogestion_estudiantil;
+
+CREATE TABLE IF NOT EXISTS estudiante (
+    legajo       VARCHAR(50)  NOT NULL PRIMARY KEY,
+    nombre       VARCHAR(150) NOT NULL,
+    carrera      VARCHAR(150) NOT NULL,
+    anio_ingreso INT          NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS materias (
+    codigo       VARCHAR(50)  NOT NULL PRIMARY KEY,
+    nombre       VARCHAR(150) NOT NULL,
+    cuatrimestre INT          NOT NULL,
+    anio         INT          NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS inscripciones (
+    id                INT          AUTO_INCREMENT PRIMARY KEY,
+    legajo_estudiante VARCHAR(50)  NOT NULL,
+    codigo_materia    VARCHAR(50)  NOT NULL,
+    total_clases      INT          NOT NULL,
+    clases_asistidas  INT          NOT NULL,
+    notas             VARCHAR(255) NOT NULL,
+    FOREIGN KEY (legajo_estudiante) REFERENCES estudiante(legajo) ON DELETE CASCADE,
+    FOREIGN KEY (codigo_materia)    REFERENCES materias(codigo)   ON DELETE CASCADE,
+    UNIQUE KEY estudiante_materia_unique (legajo_estudiante, codigo_materia)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+> El Modelo, el Controlador y la Vista **no fueron modificados** para agregar esta capa — los DAOs MySQL se instancian en el Controlador dentro de bloques `try-catch` independientes, garantizando que si MySQL no está activo la app sigue funcionando con los `.txt`.
+
+## 🤖 Documentación: Uso de IA
+
+### Candela López
+- 📄 Documentación en Word: disponible en [Carpeta con prompts](https://docs.google.com/document/d/1De6l9y5kCIDfEaS8D2kuXO0uMiABkw8VJq33leGGJ2Y/edit?usp=sharing)
+- 🎥 Video: [IE2 — Candela López](https://drive.google.com/file/d/1t9MePd7guBsE4q4pDnUlXmgmQDVR9cTU/view?usp=sharing)
+
+### Guadalupe Molina
+- 📁 [Carpeta con prompts y video](https://drive.google.com/drive/folders/1Np90drfxH5iQxy-YmBdz2l-0J-v7s9YA)
+
+### Gimena Romero
+- [link de prompts y video de Gimena]
