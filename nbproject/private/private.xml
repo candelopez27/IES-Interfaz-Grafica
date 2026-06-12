@@ -3,7 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/rgcla/OneDrive/Documentos/NetBeansProjects/Clase8interfazgrafica/IES-Interfaz-Grafica/src/vista/VentanaPrincipal.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/modelo/Estudiante.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/vista/VentanaPrincipal.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/modelo/Evaluable.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/modelo/Consultable.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/modelo/PersonaAcademica.java</file>
         </group>
     </open-files>
 </project-private>
