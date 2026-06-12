@@ -3,7 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/rgcla/OneDrive/Documentos/NetBeansProjects/Clase8interfazgrafica/IES-Interfaz-Grafica/src/vista/VentanaPrincipal.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/controlador/Controlador.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/dao/EstudianteDAO.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/modelo/Estudiante.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/modelo/Materia.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/modelo/InscripcionMateria.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/dao/mysql/Conexion.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/vista/VentanaRegistroIngresar.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/vista/VentanaPrincipal.java</file>
+            <file>file:/C:/Users/cande/OneDrive/Documentos/NetBeansProjects/SistemaDeAutogestionEstudiantil/src/vista/CrearMateria.java</file>
         </group>
     </open-files>
 </project-private>

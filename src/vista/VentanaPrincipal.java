@@ -16,13 +16,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal(Controlador controlador1) {
         initComponents();
-        this.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
+        /*this.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
         public void windowClosing(java.awt.event.WindowEvent e) {
             confirmarSalida();
             }
-        });
+        });*/
         this.controlador = controlador1;
         configurarTabla();
         panelMaterias.add(panelBotones, java.awt.BorderLayout.NORTH);
@@ -31,10 +31,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnInscribir.addActionListener(e -> accionInscribir());
         btnDarDeBaja.addActionListener(e -> accionDarDeBaja());
         btnCrearMat.addActionListener(e -> {
+        try {
+            if (controlador == null) {
+                System.out.println("ERROR: ¡El controlador es nulo!");
+                return;
+            }
             CrearMateria dialogo = new CrearMateria(this, true, controlador);
             dialogo.setLocationRelativeTo(this);
             dialogo.setVisible(true);
             actualizarTabla();
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Esto imprimirá el error real en la consola de NetBeans
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al abrir: " + ex.getMessage());
+        }
         });
         inicializar();
     }

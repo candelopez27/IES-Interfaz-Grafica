@@ -92,7 +92,6 @@ public class Controlador {
     public void inscribirMateria(String nombre, String codigo, int cuatrimestre, int anio) {
         ArrayList<Materia> todasLasMaterias = materiaDAO.leerMaterias();
 
-        // busca la materia en el archivo en lugar de crearla nueva
         Materia materiaExistente = null;
         for (Materia m : todasLasMaterias) {
             if (m.getCodigo().equalsIgnoreCase(codigo)) {
@@ -100,23 +99,22 @@ public class Controlador {
                 break;
             }
         }
+
         if (materiaExistente != null) {
             estudiante.inscribirse(materiaExistente);
-            
-            // 1. Persiste en archivo de texto obligatorio
             inscripcionDAO.guardarInscripciones(estudiante.getMaterias());
-            
-            // 2. Guardamos la nueva inscripción en MySQL
+
             try {
                 InscripcionMateria nuevaIns = estudiante.getInscripcion(codigo);
                 if (nuevaIns != null) {
+                    materiaMySQLDAO.guardarMateria(materiaExistente);
                     inscripcionMySQLDAO.guardarInscripcion(estudiante.getLegajo(), nuevaIns);
                 }
             } catch (Exception e) {
                 System.err.println("Bonus MySQL Omitido (Inscribir Materia): " + e.getMessage());
             }
         }
-    }
+}
 
     public void darDeBaja(String codigoMateria) {
         // Obtenemos la inscripción antes de borrarla por si necesitamos actualizar MySQL
