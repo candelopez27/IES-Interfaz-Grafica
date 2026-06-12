@@ -1,1 +1,4 @@
 Matemática aplicada,MAT02,2,2026
+Actualización tecnológica,ACT1,1,2026
+COMUNICACION,COM1,1,2026
+Gestion de proyectos,GES2,2,2026
