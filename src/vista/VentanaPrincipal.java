@@ -37,6 +37,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             actualizarTabla();
         });
         inicializar();
+        jPanel1.remove(panelReportes);
+        panelCentral.add(panelReportes, "card3");
+
+        btnNavegacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                java.awt.CardLayout cl = (java.awt.CardLayout) panelCentral.getLayout();
+                cl.show(panelCentral, "card2");
+            }
+        });
     }
     private void confirmarSalida() {
         int opcion = javax.swing.JOptionPane.showConfirmDialog(
